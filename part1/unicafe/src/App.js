@@ -30,7 +30,6 @@ const App = () => {
       <Button handleClick={addGood} text="Good"></Button>
       <Button handleClick={addNeutral} text="Neutral"></Button>
       <Button handleClick={addBad} text="Bad"></Button>
-      <Heading text="statistics" />
       <Statistics stats={[good, neutral, bad]}/>
     </div>
   )
@@ -60,11 +59,16 @@ const Statistics = (props) => {
 
   if (all < 1) {
     return (
-      <div>No feedback given</div>
+      <div>
+        <Heading text="statistics" />
+        <p>No feedback given</p>
+      </div>
     )
   }
   else {
     return (
+      <div>
+        <Heading text="statistics" />
       <table>
         <tbody>
         <StatisticLine count={good} text="good" />
@@ -75,10 +79,9 @@ const Statistics = (props) => {
         <StatisticLine count={positive} text="postive" unit="%" />
         </tbody>
       </table>
+      </div>
     )
   }
-
-
 }
 
 const StatisticLine = ({text, count, unit}) => {
