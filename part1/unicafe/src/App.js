@@ -1,24 +1,27 @@
 import { useState } from 'react'
 
 const App = () => {
-  // save clicks of each button to its own state
+
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
 
   const addGood = () => {
     console.log("value of good", good)
-    setGood(good + 1)
+    let updatedGood = good + 1
+    setGood(updatedGood)
   }
 
   const addNeutral = () => {
     console.log("value of neutral", neutral)
-    setNeutral(neutral + 1)
+    let updatedNeutral = neutral + 1
+    setNeutral(updatedNeutral)
   }
 
   const addBad = () => {
     console.log("value of bad", bad)
-    setBad(bad + 1)
+    let updatedBad = bad + 1
+    setBad(updatedBad)
   }
 
   return (
@@ -28,12 +31,7 @@ const App = () => {
       <Button handleClick={addNeutral} text="Neutral"></Button>
       <Button handleClick={addBad} text="Bad"></Button>
       <Heading text="statistics" />
-      <Stat count={good} text="good" />
-      <Stat count={neutral} text="neutral" />
-      <Stat count={bad} text="bad" />
-      <Stat count={good + neutral + bad} text="all" />
-      <Stat count={(good - bad) / (good + neutral + bad)} text="average" />
-      <Stat count={good / (good + neutral + bad) * 100} text="positive" />
+      <Statistics stats={[good, neutral, bad]}/>
     </div>
   )
 }
@@ -52,9 +50,43 @@ const Button = (props) => {
   )
 }
 
-const Stat = ({text, count}) => {
+const Statistics = (props) => {
+  let good = props.stats[0]
+  let neutral = props.stats[1]
+  let bad = props.stats[2]
+  let all = good + neutral + bad
+  let average = (good - bad) / all
+  let positive = good / all
+
+  if (all < 1) {
+    return (
+      <div>No feedback given</div>
+    )
+  }
+  else {
+    return (
+      <table>
+        <tbody>
+        <StatisticLine count={good} text="good" />
+        <StatisticLine count={neutral} text="neutral" />
+        <StatisticLine count={bad} text="bad" />
+        <StatisticLine count={all} text="all" />
+        <StatisticLine count={average} text="average" />
+        <StatisticLine count={positive} text="postive" unit="%" />
+        </tbody>
+      </table>
+    )
+  }
+
+
+}
+
+const StatisticLine = ({text, count, unit}) => {
   return (
-    <p>{text} {count}</p>
+    <tr>
+      <td>{text}</td> 
+      <td>{count}{unit}</td>
+    </tr>
   )
 }
 
