@@ -3,12 +3,15 @@ import contactService from './services/contacts'
 import Filter from './components/Filter'
 import AddContact from './components/AddContact'
 import Contacts from './components/Contacts'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterText, setFilterText] = useState('')
+  const [notificationMessage, setNotificationMessage] = useState(null)
+  const [error, setError] = useState(false)
 
   useEffect(() => {
     contactService
@@ -37,6 +40,17 @@ const App = () => {
         .then(response => {
           setPersons(persons.map(person => person.id !== contactId ? person : response))
         })
+        .catch(error => {
+          setNotificationMessage(
+            `Information of ${newContactObject.name} has already been removed from server`
+          )
+          setError(error => !error)
+          setPersons(persons.filter(e => e.id !== contactId))
+          setTimeout(() => {
+            setNotificationMessage(null)
+            setError(error => !error)
+          }, 5000)
+        })
       }
       clearContact()
     }
@@ -45,6 +59,12 @@ const App = () => {
         .create(newContactObject)
         .then(response => {
           setPersons(persons.concat(response))
+          setNotificationMessage(
+            `Added ${newContactObject.name} to phonebook`
+          )
+          setTimeout(() => {
+            setNotificationMessage(null)
+          }, 5000)
           clearContact()
         })
     }
@@ -79,6 +99,7 @@ const App = () => {
 
   return (
     <div>
+      <Notification message={notificationMessage} error={error}/>
       <Filter text='Phonebook' filter={filterText} handleChange={handleFilterTextChange} />
       <AddContact text="Add Contact" 
                   nameValue={newName} 
