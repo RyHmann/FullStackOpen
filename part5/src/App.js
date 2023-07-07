@@ -17,7 +17,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs.sort((a, b) => b.likes - a.likes) )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -61,12 +61,12 @@ const App = () => {
   const addBlog = async (blogObject) => {
     try {
       const newBlog = await blogService.create(blogObject)
-      newBlog.user = {user: user.name, username: user.username }
+      newBlog.user = { user: user.name, username: user.username }
       setBlogs(blogs.concat(newBlog))
       setNotificationMessage(`${newBlog.title} by ${newBlog.author} added`)
-                setTimeout(() => {
-                  setNotificationMessage(null)
-                }, 3000)
+      setTimeout(() => {
+        setNotificationMessage(null)
+      }, 3000)
     } catch (error) {
       console.log(error.message)
     }
@@ -97,27 +97,27 @@ const App = () => {
         <h1>log in to application</h1>
         <Notification message={notificationMessage}/>
         <form onSubmit = {handleLogin}>
-        <div>
+          <div>
         Username
-        <input 
-        type="text"
-        value={username}
-        name="Username"
-        onChange={({ target }) => setUsername(target.value)}
-        />
-        </div>
-        <div>
+            <input
+              type="text"
+              value={username}
+              name="Username"
+              onChange={({ target }) => setUsername(target.value)}
+            />
+          </div>
+          <div>
         password
-        <input
-        type="password"
-        value={password}
-        name="Password"
-        onChange={ ({ target }) => setPassword(target.value)}
-        />
+            <input
+              type="password"
+              value={password}
+              name="Password"
+              onChange={ ({ target }) => setPassword(target.value)}
+            />
+          </div>
+          <button type="submit">login</button>
+        </form>
       </div>
-      <button type="submit">login</button>
-      </form>
-     </div>
     )
   }
 
@@ -129,7 +129,7 @@ const App = () => {
         <Notification message={notificationMessage}/>
         <h2>blogs</h2>
         <div>
-        {user.username} logged in<button onClick={handleLogout}>Logout</button>
+          {user.username} logged in<button onClick={handleLogout}>Logout</button>
         </div>
         {blogs.map(blog =>
           <Blog key={blog.id} blog={blog} likeBlog={updateBlog} deleteBlog={deleteBlog}/>
