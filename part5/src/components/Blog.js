@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 
-const Blog = ({ blog, likeBlog, deleteBlog }) => {
+const Blog = ({ blog, likeBlog, deleteBlog, user }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -40,24 +40,26 @@ const Blog = ({ blog, likeBlog, deleteBlog }) => {
   }
 
   return(
-    <div style={blogStyle}>
-      <div style={hideWhenVisible}>
+    <div style={blogStyle} className='blog-container'>
+      <div style={hideWhenVisible} className='blog'>
         {blog.title} {blog.author}<button onClick={toggleVisibility}>view</button>
       </div>
-      <div style={showWhenVisible}>
+      <div style={showWhenVisible} className='blog-data'>
         <div>{blog.title} {blog.author}<button onClick={toggleVisibility}>hide</button></div>
         <div>{blog.url}</div>
-        <div>{blog.likes} <button onClick={handleLike}>like</button></div>
+        <div id='likes'>{blog.likes} <button id='like-button' onClick={handleLike}>like</button></div>
         <div>{blog.user.username}</div>
-        <button onClick={handleDelete}>remove</button>
+        {blog.user.username === user && (
+          <button onClick={handleDelete}>remove</button>
+        )}
       </div>
     </div>
   )
 }
 
 Blog.propTypes = {
-  handleLike: PropTypes.func.isRequired,
-  handleDelete: PropTypes.func.isRequired
+  likeBlog: PropTypes.func.isRequired,
+  deleteBlog: PropTypes.func.isRequired
 }
 
 export default Blog

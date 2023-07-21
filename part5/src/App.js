@@ -102,7 +102,7 @@ const App = () => {
             <input
               type="text"
               value={username}
-              name="Username"
+              id="username-input"
               onChange={({ target }) => setUsername(target.value)}
             />
           </div>
@@ -111,7 +111,7 @@ const App = () => {
             <input
               type="password"
               value={password}
-              name="Password"
+              id="password-input"
               onChange={ ({ target }) => setPassword(target.value)}
             />
           </div>
@@ -132,7 +132,7 @@ const App = () => {
           {user.username} logged in<button onClick={handleLogout}>Logout</button>
         </div>
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} likeBlog={updateBlog} deleteBlog={deleteBlog}/>
+          <Blog key={blog.id} blog={blog} likeBlog={updateBlog} deleteBlog={deleteBlog} user={user.username}/>
         )}
         <Togglable buttonLabel="Add blog">
           <BlogForm createBlog={addBlog}/>
